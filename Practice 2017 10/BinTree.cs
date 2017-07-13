@@ -15,8 +15,18 @@
 
         ~BinTree()
         {
-            Left = null;
-            Right = null;
+            Destruct(this);
         }
+
+        private void Destruct(BinTree tree)
+        {
+            if (tree.Left == null & tree.Right == null)
+            {
+                tree = null;
+                return;
+            }
+            if (tree.Left != null) Destruct(tree.Left);
+            if (tree.Right != null) Destruct(tree.Right);
+        } // Обходит дерево в глубину и присваивает листьям null
     } // Класс бинарного дерева
 }
