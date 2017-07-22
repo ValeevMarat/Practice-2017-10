@@ -10,6 +10,35 @@ namespace Practice_2017_10
     {
         public static Random Rnd=new Random();
 
+        public static int ReadIntegerWithBounds(int lowerBound, int upperBound, string error = "Ошибка, введите значение в допустимых границах!")
+        {
+            do
+            {
+                bool ok;       // маркер выхода из цикла
+                int input = 0; // переменная для хранения полученного числа
+
+                try
+                {
+                    input = Convert.ToInt32(Console.ReadLine());
+                    ok = input >= lowerBound & input <= upperBound;
+                }
+                catch (FormatException)
+                {
+                    Console.Clear();
+                    ok = false;
+                }
+                catch (OverflowException)
+                {
+                    Console.Clear();
+                    ok = false;
+                }
+                if (ok) return input;
+                Console.Clear();
+                Console.WriteLine(error);
+            } while (true);
+        } // Считывание целых чисел по заданным границам (включая их), error - стандартное сообщение для ошибки
+
+
         static BinTree GenerateTree(int size)
         {                         // Размер дерева от текущего узла
             if (size == 0) return null;                          // Если размер равен 0, то проход по этому узлу закончен
@@ -21,12 +50,16 @@ namespace Practice_2017_10
             tree.Left = GenerateTree(leftNodesAmount);           // Переходим к левой ветке
             tree.Right = GenerateTree(size - leftNodesAmount-1); // Переходим к правой ветке -1, т.к. создали текущий узел
             return tree;
-        } // Генерирует дерево с заданным кол-вом узлов
+        }                                                                                                     // Генерирует дерево с заданным кол-вом узлов
 
         static void Main(string[] args)
         {
-            BinTree tree= GenerateTree(10000);
-            tree = null;
-        }
+            Console.WriteLine("Введите кол-во элементов в дереве (от 1 до 10000 (включая границы))");
+            BinTree tree= GenerateTree(ReadIntegerWithBounds(1, 10000, "Ошибка, введите значение от 1 до 10000 (включая границы)"));
+            Console.WriteLine("Дерево создано и по окончанию" +
+                              " программы будет удалено");
+            tree = null; // Ставим в очередь на уничтожение
+            Console.ReadKey();
+        }                                                                                                           // Создание и удаления дерева
     }
 }
